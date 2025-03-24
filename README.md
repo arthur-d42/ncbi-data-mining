@@ -5,5 +5,9 @@ For the course 22113 at DTU
 Python enviroment is managed through a virtual Enviroment
 To activate run:
 ```
-source .venv/bin/activate
+source myenv/bin/activate
+```
+Or on windows
+```
+myenv\Scripts\activate
 ```
