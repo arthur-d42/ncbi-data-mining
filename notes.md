@@ -20,7 +20,7 @@ zcat data/downloaded/gene2pubmed.gz |grep "^9606\s" |  wc -l
 2125321
 ```
 
-We can reasonably expect the humand dataset to be one of if not the largest so by filtering these we already reduce the dataset by a factor of >30
+We can reasonably expect the human dataset to be one of if not the largest so by filtering these we already reduce the dataset by a factor of >30
 
 
 
