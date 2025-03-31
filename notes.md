@@ -2,6 +2,26 @@
 # Program outline
 
 ## Preprocessing
+### Concerns:
+- high memory usage
+### solution:
+- Read file line by line
+- Append every `tax id` to tmp file
+#### Amount of genes for organisms
+```sh
+### all
+zcat data/downloaded/gene2pubmed.gz | wc -l  
+65568643
+### Tax id 24:
+zcat data/downloaded/gene2pubmed.gz |grep "^24\s" |  wc -l 
+2805
+#### Humans:
+zcat data/downloaded/gene2pubmed.gz |grep "^9606\s" |  wc -l
+2125321
+```
+
+We can reasonably expect the humand dataset to be one of if not the largest so by filtering these we already reduce the dataset by a factor of >30
+
 
 
 
