@@ -2,12 +2,9 @@
 For the course 22113 at DTU
 
 # Enviroment
-Python enviroment is managed through a virtual Enviroment
-To activate run:
+Remember to download the dataset first - this can be done by:
 ```
-source myenv/bin/activate
-```
-Or on windows
-```
-myenv\Scripts\activate
+cd data/downloaded
+wget https://ftp.ncbi.nih.gov/gene/DATA/gene_info.gz
+wget https://ftp.ncbi.nih.gov/gene/DATA/gene_info.gz
 ```
