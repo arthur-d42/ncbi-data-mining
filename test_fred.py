@@ -1,1 +1,0 @@
-print("Test Git on Fred's computer")
