@@ -3,10 +3,10 @@ import sys
 import pathlib
 import gzip
 
-def import_data(tax_id):
+def import_data(tax_id, input_file):
     # Relative file fixthis 
     tmp_file = "data/tmpfile"
-    filename = "data/testdata2.gz"
+    filename = input_file
     # Open with gzip.open!!
     with gzip.open(filename, 'rb') as file, open(tmp_file, 'w') as tmp:
         # First line
@@ -25,7 +25,8 @@ def import_data(tax_id):
 
 def main():
     tax_id = sys.argv[1]
-    import_data(tax_id)
+    input_file = sys.argv[2]
+    import_data(tax_id, input_file)
 
 if __name__ == "__main__":
     main()

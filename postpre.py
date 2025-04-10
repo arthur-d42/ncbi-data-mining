@@ -50,6 +50,10 @@ def put_in_dict(file):
     return interaction_dict
 
 
+def write_to_file(edge_dict, outfile):
+    with open(outfile, 'w') as out:
+        out.write(edge_dict)
+    return
 
 
 tmpfile = "data/tmpfile"
@@ -57,4 +61,4 @@ sorted_tmpfile = "data/sorted_tmpfile"
 
 sort_file(tmpfile, sorted_tmpfile)
 
-print(put_in_dict(sorted_tmpfile))
+write_to_file(put_in_dict(sorted_tmpfile))
