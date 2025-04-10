@@ -12,7 +12,7 @@ def put_in_dict(file):
     # Creates dict for data storage
     interaction_dict = {}
     current_genes = []
-    current_id = 0
+    current_pubmed_id = 0
     
     # Open file for reading
     with open(file, 'r') as file:
@@ -34,20 +34,22 @@ def put_in_dict(file):
                 current_genes.append(gene)
                 
             else:
-                # Put every set of genes up
-                for this_gene in current_genes:
-                    for other_gene in current_genes:
-                        if this_gene != other_gene:
-                            edge = (this_gene, other_gene)
-                            
-                            if not interaction_dict[edge]:
-                                interaction_dict.update[edge:1]
-                            else: 
-                                interaction_dict[edge] += 1    
+                current_genes.sort()
+                for i in range(len(current_genes)):
+                    this_gene = current_genes[i]
+                    for other_gene in current_genes[i+1:]:
+                        edge = (this_gene, other_gene)
+                        
+                        if edge not in interaction_dict:
+                            interaction_dict[edge] = 1
+                        else: 
+                            interaction_dict[edge] += 1    
                 current_pubmed_id = pubmed_id
                 current_genes = [gene]
             
     return interaction_dict
+
+
 
 
 tmpfile = "data/tmpfile"
