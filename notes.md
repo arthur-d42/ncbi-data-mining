@@ -27,6 +27,44 @@ We can reasonably expect the human dataset to be one of if not the largest so by
 
 What kind of interesting and informative networks can be created by filtering or selection?:
 
+## postpreprocessing
+We need to make some kind of datastructure that's
+- Efficient to loop through
+- Doesn't take up too much memory space?
+	- Generaetable 
+**Could we do some sort of sorting of PubMed_ID?**
+### Sorting of pubmed id
+1. Sort descending order (O = log(n))
+2. 
+```python
+interaction_dict = {123 : {1234:2, 12345:2}
+					{1234: {123:2, 12345:1}	}
+				{(123,12345):4
+				"1234--123":5}
+
+current_genes = []
+for id:
+	current_id = id
+
+	# appends all the genes mentioned in current article
+	if id = current_id:
+		current_genes.append(line.gene)
+	else
+		for gene in current_genes:
+			interaction_dict[genes].value += 1
+			
+
+
+
+# On else statement (new id found)
+current_genes[123,1234,12345]
+
+
+
+def put_to_dict(infile)
+	
+```
+
 ### A network with many connected nodes = many genes.
 maybe have a cutoff filtering? Like less than 3 connections is not strong enought?
 
