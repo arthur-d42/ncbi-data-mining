@@ -54,11 +54,29 @@ for id:
 			interaction_dict[genes].value += 1
 			
 
-
-
+# if key doesn't exist
+[1,2,3,4]
+sort(cg)
+for i in range(len(cg)):
+	# for everything after i
+	this_gene = cg[i]
+	for other_gene in cg[i+1:]:
+		# current_gene is always smaller because sort earlier
+		edge = (this_gene, other_gene)
+		if not interaction_dict[edge]:
+			interaction_dict.update{edge:1}
+		else:
+			# +1 to the value
+			interaction_dict[edge] += 1
+		
+	
 # On else statement (new id found)
 current_genes[123,1234,12345]
+123 vs [1234,12345]
+1234 vs [12345]
 
+
+	
 
 
 def put_to_dict(infile)
