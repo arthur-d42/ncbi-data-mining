@@ -60,5 +60,6 @@ tmpfile = "data/tmpfile"
 sorted_tmpfile = "data/sorted_tmpfile"
 
 sort_file(tmpfile, sorted_tmpfile)
-
-write_to_file(put_in_dict(sorted_tmpfile))
+edge_dict = put_in_dict(sorted_tmpfile)
+print(edge_dict[('83066329', '83066330')])
+# write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
