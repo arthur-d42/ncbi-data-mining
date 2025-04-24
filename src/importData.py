@@ -18,7 +18,7 @@ def import_data(tax_id, input_file):
             # Convert form byte to string
             line = line.decode("utf-8")
             line = line.strip()
-            if line.startswith(tax_id):
+            if line.startswith(f"{tax_id}\t"):
                 tmp.write(f"{line}\n")
     file.close()
     tmp.close()
