@@ -93,3 +93,13 @@ Some nodes in the graph do not have any connecting edges = virgin territory or m
 Networks that consists of only few nodes where the connecting edges have low weights = not much research has been made.
 Networks that connect to a specific gene = an overview of a interaction network, maybe a biological process.
 Networks that has a specific gene as a center and has connections to the n'th degree (star shaped).
+
+
+
+
+
+
+# Spørgsmål til Peter
+- Hvor mange gener skal der i plottet?
+- Hvad er den smarteste måde, at håndtere de store mængder af data
+
