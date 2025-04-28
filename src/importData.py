@@ -7,6 +7,7 @@ def import_data(tax_id, input_file):
     # Relative file fixthis 
     tmp_file = "data/tmpfile"
     filename = input_file
+    count = 0
     # Open with gzip.open!!
     with gzip.open(filename, 'rb') as file, open(tmp_file, 'w') as tmp:
         # First line
@@ -20,13 +21,11 @@ def import_data(tax_id, input_file):
             line = line.strip()
             if line.startswith(f"{tax_id}\t"):
                 tmp.write(f"{line}\n")
+                count += 1
     file.close()
     tmp.close()
+    return count
 
-def main():
-    tax_id = sys.argv[1]
-    input_file = sys.argv[2]
-    import_data(tax_id, input_file)
 
 try:
     # Asks user for a positive integer
@@ -35,7 +34,7 @@ try:
     
     # Calculates the factorial and prints results
     result = import_data(tax_id, input_file)
-    print(f"Done")
+    print(f"Done importing file\nNumber of lines: {result}")
 
 except:
     print("Error")
