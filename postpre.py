@@ -1,4 +1,10 @@
 import subprocess
+import tracemalloc
+import time
+
+# Start timing and memory monitoring
+start_time = time.time()
+tracemalloc.start()
 
 
 def sort_file(input_file, output_file):
@@ -61,5 +67,22 @@ sorted_tmpfile = "data/sorted_tmpfile"
 
 sort_file(tmpfile, sorted_tmpfile)
 edge_dict = put_in_dict(sorted_tmpfile)
-print(edge_dict[('83066329', '83066330')])
 # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
+print(edge_dict)
+print(f"Size of dict = {len(edge_dict)}")
+
+current, peak = tracemalloc.get_traced_memory()
+print(f"Current memory usage: {current / 10**6:.2f} MB")
+print(f"Peak memory usage: {peak / 10**6:.2f} MB")
+
+# Stop monitoring
+current, peak = tracemalloc.get_traced_memory()
+end_time = time.time()
+execution_time = end_time - start_time
+
+print(f"Current memory usage: {current / 10**6:.2f} MB")
+print(f"Peak memory usage: {peak / 10**6:.2f} MB")
+print(f"Execution time: {execution_time:.4f} seconds")
+
+# Stop monitoring
+tracemalloc.stop()
