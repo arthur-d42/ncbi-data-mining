@@ -26,15 +26,26 @@ def import_data(tax_id, input_file):
     tmp.close()
     return count
 
+def main():
+    try:
+        # Asks user for a positive integer
+        tax_id = input("Please write a tax_id: ")
+        input_file = 'data/downloaded/gene2pubmed.gz'
+        
+        # Calculates the factorial and prints results
+        result = import_data(tax_id, input_file)
+        print(f"Done importing file\nNumber of lines: {result}")
 
-try:
-    # Asks user for a positive integer
-    tax_id = input("Please write a tax_id: ")
-    input_file = 'data/downloaded/gene2pubmed.gz'
-    
-    # Calculates the factorial and prints results
-    result = import_data(tax_id, input_file)
-    print(f"Done importing file\nNumber of lines: {result}")
+    except:
+        print("Error")
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        main()
+    elif len(sys.argv) == 2:
+        input_file = 'data/downloaded/gene2pubmed.gz'
+        result = import_data(sys.argv[1], input_file)
+        print(f"Done importing file\nNumber of lines: {result}")
+    else:
+        print(f"Usage: python {sys.argv[0]} tax_id(optional)")
+        
 
-except:
-    print("Error")

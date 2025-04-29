@@ -7,6 +7,7 @@ pkgs.mkShell {
     python312Packages.pip
     python312Packages.pandas
     python312Packages.pytest
+    cytoscape
   ];
 
 }
