@@ -108,3 +108,6 @@ Looking at the article it links a protein to the uniprot database which links th
 - Hvad er den smarteste måde, at håndtere de store mængder af data
 - Giver det mening bare at fjerne alt med over 1000 gener?
 
+# Informationer
+man skal køre pip install py2cytoscape
+Du skal have Cytoscape åbent, før du bruger Python-koden.
