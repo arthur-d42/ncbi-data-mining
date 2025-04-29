@@ -94,7 +94,11 @@ Networks that consists of only few nodes where the connecting edges have low wei
 Networks that connect to a specific gene = an overview of a interaction network, maybe a biological process.
 Networks that has a specific gene as a center and has connections to the n'th degree (star shaped).
 
+# What to include?
+## Is it reasonable to not include articles with > 1000 genes?
 
+### article 12477934 has like 19 thousand genes
+Looking at the article it links a protein to the uniprot database which links the protein to a whole lot of genes liek 6626 AND 6625 none of which are mentioned in the article sooo that's good
 
 
 
@@ -102,4 +106,5 @@ Networks that has a specific gene as a center and has connections to the n'th de
 # Spørgsmål til Peter
 - Hvor mange gener skal der i plottet?
 - Hvad er den smarteste måde, at håndtere de store mængder af data
+- Giver det mening bare at fjerne alt med over 1000 gener?
 
