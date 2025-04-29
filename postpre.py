@@ -67,6 +67,7 @@ sorted_tmpfile = "data/sorted_tmpfile"
 
 sort_file(tmpfile, sorted_tmpfile)
 edge_dict = put_in_dict(sorted_tmpfile)
+edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
 # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
 print(edge_dict)
 print(f"Size of dict = {len(edge_dict)}")
