@@ -29,7 +29,7 @@ def import_data(tax_id, input_file):
 
 try:
     # Asks user for a positive integer
-    tax_id = input("Please a tax_id: ")
+    tax_id = input("Please write a tax_id: ")
     input_file = 'data/downloaded/gene2pubmed.gz'
     
     # Calculates the factorial and prints results

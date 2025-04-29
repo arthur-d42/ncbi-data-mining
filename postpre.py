@@ -8,7 +8,7 @@ tracemalloc.start()
 
 
 def sort_file(input_file, output_file):
-    # Sort based on 3 column, and 3 column only. 
+    # Sort based on 3 column, and hereafter by 2 column. 
     # It is sorted as a number, which leaves header at the top and a more logical flow so that 124 will be higher than 13
     subprocess.run(["sort", "-k3,3n", "-k2,2n", input_file, "-o", output_file])
     return
