@@ -8,7 +8,7 @@ tracemalloc.start()
 
 
 def sort_file(input_file, output_file):
-    # Sort based on 3 column, and 3 column only. 
+    # Sort based on 3 column, and hereafter by 2 column. 
     # It is sorted as a number, which leaves header at the top and a more logical flow so that 124 will be higher than 13
     subprocess.run(["sort", "-k3,3n", "-k2,2n", input_file, "-o", output_file])
     return
@@ -67,6 +67,7 @@ sorted_tmpfile = "data/sorted_tmpfile"
 
 sort_file(tmpfile, sorted_tmpfile)
 edge_dict = put_in_dict(sorted_tmpfile)
+edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
 # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
 print(edge_dict)
 print(f"Size of dict = {len(edge_dict)}")
