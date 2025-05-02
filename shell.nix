@@ -2,12 +2,20 @@
 
 let
   python = pkgs.python312;
+  pyscript = pkgs.writeScriptBin "pyscript" ''
+    #!/usr/bin/env bash
+    source ${builtins.toString ./.}/.venv/bin/activate
+    python "$@"
+  '';
 in pkgs.mkShell {
   buildInputs = with pkgs; [
     python
     python.pkgs.pip
     python.pkgs.setuptools
     python.pkgs.wheel
+    
+    # Add our custom script
+    pyscript
     
     # System libraries
     stdenv.cc.cc.lib
@@ -43,8 +51,6 @@ in pkgs.mkShell {
     # Set compiler flags for building binary extensions
     export CFLAGS="-I${pkgs.zlib.dev}/include -I${pkgs.blas}/include"
     export LDFLAGS="-L${pkgs.zlib}/lib -L${pkgs.blas}/lib"
-    export C_INCLUDE_PATH="${pkgs.zlib.dev}/include:${pkgs.blas}/include"
-    export LIBRARY_PATH="${pkgs.zlib}/lib:${pkgs.blas}/lib"
     
     # Make sure pip is up to date
     pip install --upgrade pip setuptools wheel
@@ -90,6 +96,7 @@ in pkgs.mkShell {
     echo "Pip: $(which pip) ($(pip --version))"
     echo "Virtual environment: $VIRTUAL_ENV"
     echo ""
-    echo "You can now work with your Python packages."
+    echo "To run scripts directly, use: pyscript your_script.py"
+    echo "This ensures the script runs with all dependencies available."
   '';
 }

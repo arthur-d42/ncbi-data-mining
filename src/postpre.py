@@ -56,9 +56,16 @@ def put_in_dict(file):
     return interaction_dict
 
 
-def write_to_file(edge_dict, outfile):
-    with open(outfile, 'w') as out:
-        out.write(edge_dict)
+
+def write_dict_to_csv(gene_dict, filename):
+    with open(filename, 'w') as out:
+        # Write header
+        out.write("this_gene,other_gene,weight\n")
+        
+        # Write each entry
+        for (gene1, gene2), weight in gene_dict.items():
+            if weight > 1:
+                out.write(f"{gene1},{gene2},{weight}\n")
     return
 
 
@@ -69,8 +76,9 @@ sort_file(tmpfile, sorted_tmpfile)
 edge_dict = put_in_dict(sorted_tmpfile)
 edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
 # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
-print(edge_dict)
+#print(edge_dict)
 print(f"Size of dict = {len(edge_dict)}")
+write_dict_to_csv(edge_dict, 'edge_table.csv')
 
 current, peak = tracemalloc.get_traced_memory()
 print(f"Current memory usage: {current / 10**6:.2f} MB")
