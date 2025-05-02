@@ -2,9 +2,7 @@ import subprocess
 import tracemalloc
 import time
 
-# Start timing and memory monitoring
-start_time = time.time()
-tracemalloc.start()
+
 
 
 def sort_file(input_file, output_file):
@@ -57,41 +55,28 @@ def put_in_dict(file):
 
 
 
-def write_dict_to_csv(gene_dict, filename):
+def write_dict_to_csv(gene_dict, filename, weight_min):
     with open(filename, 'w') as out:
         # Write header
         out.write("this_gene,other_gene,weight\n")
         
         # Write each entry
         for (gene1, gene2), weight in gene_dict.items():
-            if weight > 1:
+            if weight >= weight_min:
                 out.write(f"{gene1},{gene2},{weight}\n")
     return
 
+def main():
+    tmpfile = "data/tmpfile"
+    sorted_tmpfile = "data/sorted_tmpfile"
 
-tmpfile = "data/tmpfile"
-sorted_tmpfile = "data/sorted_tmpfile"
+    sort_file(tmpfile, sorted_tmpfile)
+    edge_dict = put_in_dict(sorted_tmpfile)
+    edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
+    # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
+    #print(edge_dict)
+    print(f"Size of dict = {len(edge_dict)}")
+    write_dict_to_csv(edge_dict, 'edge_table.csv', 1)
 
-sort_file(tmpfile, sorted_tmpfile)
-edge_dict = put_in_dict(sorted_tmpfile)
-edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
-# write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
-#print(edge_dict)
-print(f"Size of dict = {len(edge_dict)}")
-write_dict_to_csv(edge_dict, 'edge_table.csv')
-
-current, peak = tracemalloc.get_traced_memory()
-print(f"Current memory usage: {current / 10**6:.2f} MB")
-print(f"Peak memory usage: {peak / 10**6:.2f} MB")
-
-# Stop monitoring
-current, peak = tracemalloc.get_traced_memory()
-end_time = time.time()
-execution_time = end_time - start_time
-
-print(f"Current memory usage: {current / 10**6:.2f} MB")
-print(f"Peak memory usage: {peak / 10**6:.2f} MB")
-print(f"Execution time: {execution_time:.4f} seconds")
-
-# Stop monitoring
-tracemalloc.stop()
+if __name__ == "__main__":
+    main()
