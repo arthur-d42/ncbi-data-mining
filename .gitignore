@@ -3,3 +3,4 @@ __pycache__/
 myenv/
 Cytoscape_3_10_3_unix.sh
 logs/
+.venv/
