@@ -111,3 +111,8 @@ Looking at the article it links a protein to the uniprot database which links th
 # Informationer
 man skal køre pip install py2cytoscape
 Du skal have Cytoscape åbent, før du bruger Python-koden.
+man skal have cytoscape i ubuntu: 
+"- wget https://github.com/cytoscape/cytoscape/releases/download/3.10.3/Cytoscape_3_10_3_unix.sh"
+"- sudo apt install openjdk-17-jdk openjdk-17-jre"
+"- chmod u+x Cytoscape_3_10_3_unix.sh"
+man skal have en X-server
