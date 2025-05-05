@@ -7,5 +7,11 @@ from addName import geneID_to_symbol_dict
 # Importing data into tmp file for less use of memory 
 run_import_gene2pubmed()
 
+weight_min = input("Please write a minimum weight: ")
+
 # Testing
-# run_processing()
+run_processing(weight_min)
+
+
+# Testing 2
+

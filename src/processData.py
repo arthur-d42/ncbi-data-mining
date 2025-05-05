@@ -81,35 +81,31 @@ def write_dict_to_csv(gene_dict, filename, weight_min):
 
 
 
-
-def run_processing():
+def run_processing(weight_min):
     """Function that runs above functions while asking for input"""
+    
+    # Sort tmpfile
     tmpfile = "data/tmpfile"
     sorted_tmpfile = "data/sorted_tmpfile"
-
     sort_file(tmpfile, sorted_tmpfile)
+    
+    # Make edge_dict from sorted_tmpfile
     edge_dict = put_in_dict(sorted_tmpfile)
     edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
     
-    if len(sys.argv) == 1:
-        sys.exit(1)
+    try:
+        write_dict_to_csv(edge_dict, 'edge_table.csv', weight_min)
     
-    # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
-    print(f"Size of dict = {len(edge_dict)}")
-    if len(sys.argv) == 2:
-        try:
-            weight_min = int(sys.argv[1])  # Convert to integer
-            write_dict_to_csv(edge_dict, 'edge_table.csv', weight_min)
-        except ValueError:
-            print("Error: The weight_min argument must be an integer.")
-            sys.exit(1)
-    
-    if len(sys.argv) == 3:
-        write_dict_to_csv(edge_dict, 'edge_table.csv', 1)
-    
-    else:
-        print(f"Usage: python {sys.argv[0]} gene_dict(optional) filename(optional) weight(optional)")
+    except:
+        print(f"Usage: python {sys.argv[0]}(weight_min)")
         sys.exit(1)
 
+
 if __name__ == "__main__":
-    run_processing()
+    try:
+        weight_min = int(input("Please write a minimum weight: "))
+    except ValueError: 
+        print("Error: weight_min must be a number")
+        sys.exit(1)
+    
+    run_processing(weight_min)
