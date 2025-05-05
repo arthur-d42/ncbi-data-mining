@@ -4,12 +4,18 @@ import pathlib
 import gzip
 
 def import_data(tax_id, input_file):
+    """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file"""
+    
     # Relative file fixthis 
     tmp_file = "data/tmpfile"
-    filename = input_file
     count = 0
-    # Open with gzip.open!!
-    with gzip.open(filename, 'rb') as file, open(tmp_file, 'w') as tmp:
+    
+    # Checking whether input file exists
+    if not pathlib.Path(input_file).is_file():
+        raise FileNotFoundError(f"Input file '{input_file}' does not exist.")
+    
+    # Open with gzip.open
+    with gzip.open(input_file, 'rb') as file, open(tmp_file, 'w') as tmp:
         # First line
         first_line = file.readline().decode("utf-8")
         # readline() adds \n for us maybe?
@@ -22,30 +28,47 @@ def import_data(tax_id, input_file):
             if line.startswith(f"{tax_id}\t"):
                 tmp.write(f"{line}\n")
                 count += 1
-    file.close()
-    tmp.close()
+    
+    # Printing warning if no lines found for tax_id
+    if count == 0:
+        print(f"Warning: No entries found for tax_id {tax_id}")
+    
     return count
 
-def main():
+def run_import(tax_id, input_file):
+    """FUnction that runs the import_data and provides error messages"""
     try:
-        # Asks user for a positive integer
-        tax_id = input("Please write a tax_id: ")
-        input_file = 'data/downloaded/gene2pubmed.gz'
-        
-        # Calculates the factorial and prints results
         result = import_data(tax_id, input_file)
         print(f"Done importing file\nNumber of lines: {result}")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        sys.exit(1)
 
-    except:
-        print("Error")
-if __name__ == "__main__":
+
+def main():
     if len(sys.argv) == 1:
-        main()
+        tax_id = input("Please write a tax_id: ")
+        input_file = input(f"\nPlease enter the path to gene2pubmed.gz\nIf clicking \"Enter\", default is data/downloaded/gene2pubmed.gz:").strip()
+        if not input_file:
+            input_file = 'data/downloaded/gene2pubmed.gz'
+        run_import(tax_id, input_file)
+    
     elif len(sys.argv) == 2:
+        # One argument: tax_id (uses standard location of gene2pubmed)
+        tax_id = sys.argv[1]
         input_file = 'data/downloaded/gene2pubmed.gz'
-        result = import_data(sys.argv[1], input_file)
-        print(f"Done importing file\nNumber of lines: {result}")
+        run_import(tax_id, input_file)
+        
+    elif len(sys.argv) == 3: 
+        tax_id = sys.argv[1]
+        input_file = sys.argv[2]
+        run_import(tax_id, input_file)
+    
     else:
         print(f"Usage: python {sys.argv[0]} tax_id(optional)")
-        
 
+if __name__ == "__main__":
+    main()

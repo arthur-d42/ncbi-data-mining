@@ -1,7 +1,6 @@
+# Importing functions from other files
 import postpre
-import importData
+from importData import main as import_main
 import add_name
 
-postpre.sort_file()
-
-# TEster
+import_main()
