@@ -1,7 +1,7 @@
 import subprocess
 import tracemalloc
 import time
-
+import sys
 
 
 
@@ -76,7 +76,15 @@ def main():
     # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
     #print(edge_dict)
     print(f"Size of dict = {len(edge_dict)}")
-    write_dict_to_csv(edge_dict, 'edge_table.csv', 1)
+    if len(sys.argv) == 2:
+        try:
+            weight_min = int(sys.argv[1])  # Convert to integer
+            write_dict_to_csv(edge_dict, 'edge_table.csv', weight_min)
+        except ValueError:
+            print("Error: The weight_min argument must be an integer.")
+            sys.exit(1)
+    else:
+        write_dict_to_csv(edge_dict, 'edge_table.csv', 1)
 
 if __name__ == "__main__":
     main()
