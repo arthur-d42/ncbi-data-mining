@@ -7,4 +7,4 @@ from importData import run_import_gene2pubmed
 # Importing data into tmp file for less use of memory 
 run_import_gene2pubmed()
 
-run_processing()
+# run_processing()
