@@ -1,19 +1,21 @@
+# Import libraries
 import subprocess
 import tracemalloc
 import time
 import sys
 
 
-
 def sort_file(input_file, output_file):
-    # Sort based on 3 column, and hereafter by 2 column. 
-    # It is sorted as a number, which leaves header at the top and a more logical flow so that 124 will be higher than 13
+    """Function that sorts files based on 3 column, and hereafter by 2 column.
+    It is sorted as a number, which leaves header at the top and a more logical flow so that 124 will be higher than 13"""
     subprocess.run(["sort", "-k3,3n", "-k2,2n", input_file, "-o", output_file])
     return
 
 
 def put_in_dict(file):
-    # Creates dict for data storage
+    """Function that takes a file in the format of """
+    
+    # Create initial variables
     interaction_dict = {}
     current_genes = []
     current_pubmed_id = 0

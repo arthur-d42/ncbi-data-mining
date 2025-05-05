@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Import libraries
 import sys
 import pathlib
 import gzip
@@ -50,6 +51,7 @@ def run_import(tax_id, input_file):
 
 def main():
     if len(sys.argv) == 1:
+        # If just file is called
         tax_id = input("Please write a tax_id: ")
         input_file = input(f"\nPlease enter the path to gene2pubmed.gz\nIf clicking \"Enter\", default is data/downloaded/gene2pubmed.gz:").strip()
         if not input_file:
@@ -63,6 +65,7 @@ def main():
         run_import(tax_id, input_file)
         
     elif len(sys.argv) == 3: 
+        # If both program, tax_id and file is provided
         tax_id = sys.argv[1]
         input_file = sys.argv[2]
         run_import(tax_id, input_file)
