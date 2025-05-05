@@ -1,21 +1,36 @@
-import gzip
+# Import libraries
 import sys
+import pathlib
+import gzip
 
-def geneID_to_symbol_dict(taxID):
+def geneID_to_symbol_dict(taxID, filepath):
     filepath = "data/downloaded/gene_info.gz"
     
     symbol_dict = {}
     
-    with gzip.open(filepath, 'rt') as file:
-        for line in file:
-            split_line = line.split()
-            if split_line[0] == taxID:
-                geneID = split_line[1]
-                symbol = split_line[2]
-                symbol_dict[geneID] = symbol
-        
-        file.close()    
-        return symbol_dict
+    try:
+        # Checking whether input file exists
+        if not pathlib.Path(filepath).is_file():
+            raise FileNotFoundError(f"Input file '{filepath}' does not exist.")
+
+        with gzip.open(filepath, 'rt') as file:
+            for line in file:
+                split_line = line.split()
+                if split_line[0] == taxID:
+                    geneID = split_line[1]
+                    symbol = split_line[2]
+                    symbol_dict[geneID] = symbol
+            
+            return symbol_dict
+    
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+    
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        sys.exit(1)
+    
 
 def create_gene_translation_file(input_file, output_file, symbol_dict):
     # unique gene IDs. Set because unique
@@ -48,5 +63,9 @@ def create_gene_translation_file(input_file, output_file, symbol_dict):
             symbol = symbol_dict.get(gene_id, "")
             f.write(f"{gene_id},{symbol}\n")
 
-symbol_dict = geneID_to_symbol_dict(sys.argv[1])
-create_gene_translation_file('edge_table.csv', 'node_table.csv', symbol_dict)
+
+if __name__ == "__main__":
+    filepath = "data/downloaded/gene_info.gz"
+    symbol_dict = geneID_to_symbol_dict(sys.argv[1], filepath)
+    create_gene_translation_file('edge_table.csv', 'node_table.csv', symbol_dict)
+
