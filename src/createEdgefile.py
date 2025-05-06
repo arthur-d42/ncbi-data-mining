@@ -2,15 +2,15 @@
 import subprocess
 import sys
 
-def sort_file(input_file, output_file):
+def sort_file(file, sorted_file):
     """Function that sorts files based on 3 column, and hereafter by 2 column.
     It is sorted as a number, which leaves header at the top and a more logical flow so that 124 will be higher than 13"""
-    subprocess.run(["sort", "-k3,3n", "-k2,2n", input_file, "-o", output_file])
+    subprocess.run(["sort", "-k3,3n", "-k2,2n", file, "-o", sorted_file], check=True)
     return
 
 
-def put_in_dict(file):
-    """Function that takes a file in the format of """
+def put_in_dict(sorted_file):
+    """Converts a sorted tmp_file to a dictionary of gene pair interactions with counts."""
     
     # Create initial variables
     interaction_dict = {}
@@ -19,12 +19,12 @@ def put_in_dict(file):
     
     try:
         # Open file for reading
-        with open(file, 'r') as file:
+        with open(sorted_file, 'r') as file:
             
             # Read header line and skip
             file.readline()
             for line in file:
-                split_line = line.split()
+                split_line = line.strip().split()
                 
                 pubmed_id = split_line[2]
                 gene = split_line[1]
@@ -51,7 +51,18 @@ def put_in_dict(file):
                                     interaction_dict[edge] += 1    
                     current_pubmed_id = pubmed_id
                     current_genes = [gene]
-                
+        
+        # Process the last group of genes (final pubmed_id block)
+        if 2 <= len(current_genes) < 1000:
+            for i in range(len(current_genes)):
+                this_gene = current_genes[i]
+                for other_gene in current_genes[i+1:]:
+                    edge = (this_gene, other_gene)
+                    
+                    if edge not in interaction_dict:
+                        interaction_dict[edge] = 1
+                    else: 
+                        interaction_dict[edge] += 1    
         return interaction_dict
 
     except FileNotFoundError as e:
@@ -64,9 +75,8 @@ def put_in_dict(file):
 
 
 
-
-def write_dict_to_csv(gene_dict, filename, weight_min):
-    with open(filename, 'w') as out:
+def write_dict_to_csv(gene_dict, edge_file, weight_min):
+    with open(edge_file, 'w') as out:
         # Write header
         out.write("this_gene,other_gene,weight\n")
         
@@ -78,34 +88,37 @@ def write_dict_to_csv(gene_dict, filename, weight_min):
 
 
 
-
-
-
-def run_processing(weight_min):
+def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
     """Function that runs above functions while asking for input"""
+    # Sort tmp_file
+    sort_file(tmp_file, sorted_tmp_file)
     
-    # Sort tmpfile
-    tmpfile = "data/tmpfile"
-    sorted_tmpfile = "data/sorted_tmpfile"
-    sort_file(tmpfile, sorted_tmpfile)
-    
-    # Make edge_dict from sorted_tmpfile
-    edge_dict = put_in_dict(sorted_tmpfile)
+    # Make edge_dict from sorted_tmp_file
+    edge_dict = put_in_dict(sorted_tmp_file)
     edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
     
     try:
-        write_dict_to_csv(edge_dict, 'edge_table.csv', weight_min)
+        write_dict_to_csv(edge_dict, edge_file, weight_min)
     
     except:
-        print(f"Usage: python {sys.argv[0]}(weight_min)")
+        print(f"An error occured while writing edge file to {edge_file}")
         sys.exit(1)
+
+
 
 
 if __name__ == "__main__":
     try:
-        weight_min = int(input("Please write a minimum weight: "))
+        # Defaults for file paths
+        tmp_file = "data/tmp_file"
+        sorted_tmp_file = "data/sorted_tmp_file"
+        edge_file = 'data/edge_table.csv'
+        
+        # Ask for min weight
+        weight_min = int(input("Please write a minimum weight (suggestion is 1): "))
+        create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)
+    
     except ValueError: 
         print("Error: weight_min must be a number")
         sys.exit(1)
     
-    run_processing(weight_min)
