@@ -89,7 +89,7 @@ def write_dict_to_csv(gene_dict, edge_file, weight_min):
 
 
 def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
-    """Function that runs above functions while asking for input"""
+    """X"""
     # Sort tmp_file
     sort_file(tmp_file, sorted_tmp_file)
     
