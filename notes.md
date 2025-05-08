@@ -116,3 +116,8 @@ man skal have cytoscape i ubuntu:
 "- sudo apt install openjdk-17-jdk openjdk-17-jre"
 "- chmod u+x Cytoscape_3_10_3_unix.sh"
 man skal have en X-server
+
+
+
+What can we expect to run the program
+Any hints for cytoscape networkx?

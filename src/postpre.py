@@ -12,7 +12,7 @@ def sort_file(input_file, output_file):
     return
 
 
-def put_in_dict(file):
+def put_in_dict(file, max_mention):
     # Creates dict for data storage
     interaction_dict = {}
     current_genes = []
@@ -38,7 +38,7 @@ def put_in_dict(file):
             else:
                 # No need for this when sorting in bash
                 # current_genes.sort()
-                if 2 <= len(current_genes) < 1000:
+                if 2 <= len(current_genes) < max_mention:
                     for i in range(len(current_genes)):
                         this_gene = current_genes[i]
                         for other_gene in current_genes[i+1:]:
@@ -71,7 +71,15 @@ def main():
     sorted_tmpfile = "data/sorted_tmpfile"
 
     sort_file(tmpfile, sorted_tmpfile)
-    edge_dict = put_in_dict(sorted_tmpfile)
+    if len(sys.argv) == 3:
+        try:
+            max_mention = int(sys.argv[2])  # Convert to integer
+            edge_dict = put_in_dict(sorted_tmpfile, max_mention)
+        except ValueError:
+            print("Error: The max_mention argument must be an integer.")
+            sys.exit(1)
+    else:
+        edge_dict = put_in_dict(sorted_tmpfile, 1000)
     edge_dict = {k: v for k, v in sorted(edge_dict.items(), key=lambda item: item[1])}
     # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
     #print(edge_dict)

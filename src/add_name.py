@@ -47,6 +47,10 @@ def create_gene_translation_file(input_file, output_file, symbol_dict):
             # Look up symbol in dictionary, use empty string if not found
             symbol = symbol_dict.get(gene_id, "")
             f.write(f"{gene_id},{symbol}\n")
+main():
+    symbol_dict = geneID_to_symbol_dict(sys.argv[1])
+    create_gene_translation_file('edge_table.csv', 'node_table.csv', symbol_dict)
 
-symbol_dict = geneID_to_symbol_dict(sys.argv[1])
-create_gene_translation_file('edge_table.csv', 'node_table.csv', symbol_dict)
+if __name__ == "__main__":
+    main()
+        
