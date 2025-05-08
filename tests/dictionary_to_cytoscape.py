@@ -3,8 +3,8 @@ import networkx as nx
 import py4cytoscape as p4c
 
 # Load data
-edges_df = pd.read_csv("tests/edge_table.csv")
-nodes_df = pd.read_csv("tests/node_table.csv")
+edges_df = pd.read_csv("data/edge_table.csv")
+nodes_df = pd.read_csv("data/node_table.csv")
 
 # Create NetworkX graph with edge weights
 G = nx.from_pandas_edgelist(edges_df, source='this_gene', target='other_gene', edge_attr=['weight'])

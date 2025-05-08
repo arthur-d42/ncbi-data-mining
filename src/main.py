@@ -3,7 +3,7 @@ import sys
 
 
 # Importing functions from other files
-from importData import run_import_data
+from importData import import_data
 from createEdgefile import create_edge_file
 from createNodefile import create_node_file
 
@@ -52,7 +52,7 @@ if not info_file:
 
 
 # Import Data
-tax_id = run_import_data(tax_id, input_file, tmp_file)
+import_data(tax_id, input_file, tmp_file)
 
 
 # Create Edge File

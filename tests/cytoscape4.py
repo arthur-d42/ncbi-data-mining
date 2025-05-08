@@ -21,32 +21,30 @@ def load_data(edge_file, node_file=None):
                 G.nodes[node_id]['symbol'] = row['symbol']
     else:
         # Create node table with just IDs
-        nodes_df = pd.DataFrame({'geneID': list(G.nodes())})
-        
+        print('Symbol not found')
     return G, nodes_df
 
-def analyze_and_filter(G, filter_method="top_n", filter_value=10):
+def analyze_and_filter(G, filter_value=10):
     """Analyze network and filter based on criteria"""
     # Calculate node degrees
     degrees = dict(G.degree())
     
     # Filter graph
-    if filter_method == "top_n":
-        # Get top N hubs
-        top_hubs = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:filter_value]
-        top_hub_ids = [node for node, _ in top_hubs]
-        
-        # Create subgraph with hubs and their neighbors
-        filtered_G = nx.Graph()
-        for hub in top_hub_ids:
-            filtered_G.add_node(hub)
-            for neighbor in nx.node_connected_component(G, hub):
-                filtered_G.add_edge(hub, neighbor, weight=G[hub][neighbor].get('weight', 1))
+    # Get top N hubs
+    top_hubs = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:filter_value]
+    top_hub_ids = [node for node, _ in top_hubs]
+    
+    # Create subgraph with hubs and all their connected nodes
+    filtered_G = nx.Graph()
+    for hub in top_hub_ids:
+        filtered_G.add_node(hub)
+        for neighbor in nx.node_connected_component(G, hub):
+            # Add this
 
     # Add degree attribute to nodes
     for node in filtered_G.nodes():
         filtered_G.nodes[node]['degree'] = degrees[node]
-    
+
     return filtered_G, degrees
 
 def export_for_cytoscape(G, prefix="gene_network"):
