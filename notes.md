@@ -116,3 +116,25 @@ man skal have cytoscape i ubuntu:
 "- sudo apt install openjdk-17-jdk openjdk-17-jre"
 "- chmod u+x Cytoscape_3_10_3_unix.sh"
 man skal have en X-server
+
+
+
+What kind of interesting and informative networks can be created by filtering or selection?:
+
+    A network with many connected nodes = many genes.
+    Networks where the sum of the edges is high = many co-mentioning articles.
+    High edge-sum/nodes = high importance of the network, many articles.    ------ SORT NETWORKS OF LOW NODE SUM (>3?)
+    Some nodes in the graph do not have any connecting edges = virgin territory or maybe uninteresting. ----- ALREADY SORTED AWAY
+    Networks that consists of only few nodes where the connecting edges have low weights = not much research has been made.   ----- LOW DEGREE SORT AWAY?
+    Networks that connect to a specific gene = an overview of a interaction network, maybe a biological process.     ------ NOT IMPLEMENTING
+    Networks that has a specific gene as a center and has connections to the n'th degree (star shaped).  ------ NOT IMPLEMENTING
+
+
+
+
+	O---O
+
+
+	    O
+		|
+	O---O---O
