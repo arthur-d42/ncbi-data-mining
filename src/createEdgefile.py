@@ -74,8 +74,8 @@ def put_in_dict(sorted_file):
         sys.exit(1)
 
 
-
 def write_dict_to_csv(gene_dict, edge_file, weight_min):
+    """Function that writes edge_file to to from a dict with edges and a weight. Selects only edges with a minimum of weight"""
     with open(edge_file, 'w') as out:
         # Write header
         out.write("this_gene,other_gene,weight\n")
@@ -87,9 +87,8 @@ def write_dict_to_csv(gene_dict, edge_file, weight_min):
     return
 
 
-
 def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
-    """X"""
+    """Function that creates an edge file (csv) from a tmp file, creating a sorted tmp file with a minimum weight"""
     # Sort tmp_file
     sort_file(tmp_file, sorted_tmp_file)
     
@@ -105,20 +104,29 @@ def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
         sys.exit(1)
 
 
-
-
-if __name__ == "__main__":
+def main():
+    """Function that runs create_node_file() while asking for input"""
     try:
-        # Defaults for file paths
-        tmp_file = "data/tmp_file"
-        sorted_tmp_file = "data/sorted_tmp_file"
-        edge_file = 'data/edge_table.csv'
+        try:
+            weight_min = int(input("Please write a minimum weight (suggestion is 1): "))
+        except ValueError: 
+            print("Error: weight_min must be a number")
+            sys.exit(1)
         
-        # Ask for min weight
-        weight_min = int(input("Please write a minimum weight (suggestion is 1): "))
+        tmp_file = input("Enter path to temporary output file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
+
+        sorted_tmp_file = input("Enter path to sorted temporary file (or press Enter for default): ").strip() or "data/sorted_tmp_file.tsv"
+
+        edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
+        
         create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)
+        print(f"Created edge file in location {edge_file}")
     
     except ValueError: 
         print("Error: weight_min must be a number")
         sys.exit(1)
     
+
+if __name__ == "__main__":
+    # For running the program in terminal
+    main()

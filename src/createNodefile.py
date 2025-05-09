@@ -4,6 +4,7 @@ import pathlib
 import gzip
 
 def geneID_to_symbol_dict(tax_id, info_file):
+    """Function that takes a tax_id and finds the appropriate symbol in the gene_info.gz file"""
     symbol_dict = {}
     
     try:
@@ -14,6 +15,7 @@ def geneID_to_symbol_dict(tax_id, info_file):
         with gzip.open(info_file, 'rt') as file:
             for line in file:
                 split_line = line.split()
+                # Looks for lines with tax_id, finds the gene ID, and the symbol from that line and adds to dict
                 if split_line[0] == tax_id:
                     geneID = split_line[1]
                     symbol = split_line[2]
@@ -31,14 +33,16 @@ def geneID_to_symbol_dict(tax_id, info_file):
     
 
 def create_node_file(edge_file, node_file, tax_id, info_file):
+    """Function that takes an edge_file, the name of the wished output file, and creates the edges with names decided from 
+    tax_id and the info file"""
     
-    #
+    # Create dict that translates geneID to symbol
     symbol_dict = geneID_to_symbol_dict(tax_id, info_file)
     
-    # unique gene IDs. Set because unique
+    # unique gene IDs
     unique_gene_ids = set()
     
-    # Read input file 
+    # Read edge file 
     try:
         with open(edge_file, 'r') as f:
             # Skip header
@@ -74,27 +78,30 @@ def create_node_file(edge_file, node_file, tax_id, info_file):
         print(f"Error writing node file: {e}")
         sys.exit(1)
 
+def main():
+    """Function that runs create_node_file() while asking for input"""
+    try:
+        # Ask for tax_id
+        tax_id = input("Please write a tax_id: ")
+        if not tax_id.isdigit():
+            print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
+            sys.exit(1)
 
-if __name__ == "__main__":
-    
-    # Ask for tax_id
-    tax_id = input("Please write a tax_id: ")
-    if not tax_id.isdigit():
-        print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
+        # Ask user for file paths or use defaults
+        edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
+
+        node_file = input("Enter path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
+
+        info_file = input("Enter path to gene_info.gz (or press Enter for default): ").strip() or "data/downloaded/gene_info.gz"
+
+        # Call create_gene_translation_file
+        create_node_file(edge_file, node_file, tax_id, info_file)
+        print(f"Created node file in location {node_file}")
+    except:
+        print("Error") 
         sys.exit(1)
 
-    # Ask user for file paths or use defaults
-    edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip()
-    if not edge_file:
-        edge_file = 'data/edge_table.csv'
 
-    node_file = input("Enter path to node_table.csv (or press Enter for default): ").strip()
-    if not node_file:
-        node_file = 'data/node_table.csv'
-
-    info_file = input("Enter path to gene_info.gz (or press Enter for default): ").strip()
-    if not info_file:
-        info_file = "data/downloaded/gene_info.gz"
-
-    # Call create_gene_translation_file
-    create_node_file(edge_file, node_file, tax_id, info_file)
+if __name__ == "__main__":
+    # For running the program in terminal
+    main()

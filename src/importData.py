@@ -5,8 +5,7 @@ import pathlib
 import gzip
 
 def import_data(tax_id, input_file, tmp_file):
-    """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file"""
-    # Relative file fixthis 
+    """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file""" 
     count = 0
     
     if not tax_id.isdigit():
@@ -49,14 +48,6 @@ def import_data(tax_id, input_file, tmp_file):
         sys.exit(1)
 
 
-def run_import_data(tax_id, input_file, tmp_file):
-    import_data(tax_id, input_file, tmp_file)
-    return tax_id
-
-
-
-
-# For running this function seperately in terminal
 def main():
     """Function that runs import_data() while asking for input"""
     if len(sys.argv) == 1:
@@ -66,23 +57,19 @@ def main():
             print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
             sys.exit(1)
         
-        input_file = input(f"Please enter the path to gene2pubmed.gz\nIf clicking \"Enter\", default is data/downloaded/gene2pubmed.gz: ").strip()
-        if not input_file:
-            input_file = "data/downloaded/gene2pubmed.gz"
+        input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
             
         import_data(tax_id, input_file)
         return tax_id
     
     elif len(sys.argv) == 2:
-        # One argument: tax_id (uses standard location of gene2pubmed)
+        # One argument: tax_id
         tax_id = sys.argv[1]
         if not tax_id.isdigit():
             print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
             sys.exit(1)
             
-        input_file = input(f"Please enter the path to gene2pubmed.gz\nIf clicking \"Enter\", default is data/downloaded/gene2pubmed.gz: ").strip()
-        if not input_file:
-            input_file = "data/downloaded/gene2pubmed.gz"
+        input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
         
         import_data(tax_id, input_file)
         return tax_id
@@ -99,4 +86,5 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
+    # For running the program in terminal
     main()
