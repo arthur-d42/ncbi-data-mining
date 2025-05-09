@@ -26,14 +26,24 @@ def load_data(edge_file, node_file=None):
     
     return G, nodes_df
 
-def analyze_and_filter(G, filter_value):
+def analyze_and_filter(G, n, m):
     """Analyze network and filter based on criteria"""
     # Calculate node degrees
     degrees = dict(G.degree())
     
-    # Filter graph
+    print(G)
+    
+    # Find noder med grad mindre end m
+    nodes_to_remove = [node for node, degree in degrees.items() if degree < m]
+    
+    # Fjern disse noder fra grafen
+    G.remove_nodes_from(nodes_to_remove)
+    
+    print(G)
+    
+    
     # Get top N hubs
-    top_hubs = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:filter_value]
+    top_hubs = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:n]
     top_hub_ids = [node for node, _ in top_hubs]
     
     return top_hub_ids, degrees
@@ -41,23 +51,24 @@ def analyze_and_filter(G, filter_value):
 
 def main():
     # Get file inputs
-    print("Remember to have Cytoscape from Unix system")
-    print("You might need a version of X running")
+    print("\nRemember to have Cytoscape from Unix system")
+    print("\nYou might need a version of X running")
     
-    n = int(input("Number of top hubs (or press Enter for 10 as default): ") or "10")
+    n = int(input("\nNumber of top hubs (or press Enter for 10 as default): ") or "10")
     
-    edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
+    m = int(input("\nNumber of top hubs (or press Enter for 2 as default): ") or "2")
+    
+    edge_file = input("\nEnter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
 
     node_file = input("Enter path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
     
     # Load network
     G, _ = load_data(edge_file, node_file)
-    print(f"Loaded network with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges")
+    print(f"\nLoaded network with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges")
     
     # Filter
-    top_genes, degrees = analyze_and_filter(G, n)
+    top_genes, degrees = analyze_and_filter(G, n, m)
     
-    print(top_genes)
     # Display top genes
     print("\nTop genes in network:")
     for gene in top_genes:

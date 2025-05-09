@@ -40,4 +40,4 @@ create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)
 create_node_file(edge_file, node_file, tax_id, info_file)
 
 # Run in Cytoscape
-
+main()
