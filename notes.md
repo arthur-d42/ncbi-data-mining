@@ -147,3 +147,11 @@ What kind of interesting and informative networks can be created by filtering or
 - [ ] Unit testing (Fred)
 - [ ] Runtime analysis (Arthur)
 - [ ] Resulting graphs
+
+
+
+
+
+    for geneID in genes:
+        if degrees[gene] > 2:
+            del genes[geneID]
