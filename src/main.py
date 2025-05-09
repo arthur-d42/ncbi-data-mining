@@ -6,6 +6,7 @@ import sys
 from importData import import_data
 from createEdgefile import create_edge_file
 from createNodefile import create_node_file
+from grapProcessing import *
 
 # Ask for user input
 try:
