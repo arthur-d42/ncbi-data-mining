@@ -138,3 +138,12 @@ What kind of interesting and informative networks can be created by filtering or
 	    O
 		|
 	O---O---O
+
+
+# Hvad mangler vi
+# Kode
+- [ ] Networkx analysis (??)
+	- [ ] 
+- [ ] Unit testing (Fred)
+- [ ] Runtime analysis (Arthur)
+- [ ] Resulting graphs
