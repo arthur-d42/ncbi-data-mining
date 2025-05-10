@@ -3,9 +3,8 @@ import subprocess
 import sys
 import os
 
-def file_exists(file_path):
-    """Checks if the file exists"""
-    return os.path.isfile(file_path)
+# Importing functions from other files
+from importData import file_exists
 
 def sort_file(file, sorted_file):
     """Function that sorts files based on 3 column, and hereafter by 2 column.
@@ -98,7 +97,7 @@ def write_dict_to_csv(gene_dict, edge_file, weight_min):
 
 def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
     """Function that creates an edge file (csv) from a tmp file, creating a sorted tmp file with a minimum weight"""
-    print("Starting creation of edge file")
+    print("\nStarting creation of edge file")
     
     # Sort tmp_file
     sort_file(tmp_file, sorted_tmp_file)
@@ -119,25 +118,22 @@ def main():
     """Function that runs create_node_file() while asking for input"""
     while True:
         try:
-            weight_min_input = input("\nPlease enter a minimum weight (or press Enter for 3 as default): ").strip()
+            weight_min_input = input("\nPlease enter the minimum weight of the edges you want (or press Enter for 3 as default): ").strip()
             weight_min = int(weight_min_input) if weight_min_input else 3
             break
         except ValueError: 
             print("Error: weight_min must be a number. Please try again.")
         
         
+    while True:
+        tmp_file = input("\nPlease enter the path to the temporary file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
+        if file_exists(tmp_file):
+            break
+        print(f"Error: Temporary file '{tmp_file}' not found. Please try again.")
 
-    tmp_file = input("Please enter the path to temporary file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
-    if not file_exists(tmp_file):
-        print(f"Error: Temporary file '{tmp_file}' not found.")
-        sys.exit(1)
+    sorted_tmp_file = input("\nPlease enter where you want the sorted temporary file (or press Enter for default): ").strip() or "data/sorted_tmp_file.tsv"
 
-    sorted_tmp_file = input("Please enter the path to sorted temporary file (or press Enter for default): ").strip() or "data/sorted_tmp_file.tsv"
-
-    edge_file = input("Please enter the path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
-    if not file_exists(edge_file):
-            print(f"Error: Edge file '{edge_file}' not found.")
-            sys.exit(1)
+    edge_file = input("\nPlease enter where you want the edge file (or press Enter for default): ").strip() or 'data/edge_table.csv'
 
     create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)   
 

@@ -3,6 +3,11 @@
 import sys
 import pathlib
 import gzip
+import os
+
+def file_exists(file_path):
+    """Checks if the file exists"""
+    return os.path.isfile(file_path)
 
 def import_data(tax_id, input_file, tmp_file):
     """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file""" 
@@ -54,15 +59,19 @@ def main():
     """Function that runs import_data() while asking for input"""
     while True:
         try:
-            tax_id_input = input("\nPlease enter a tax ID(or press Enter for 9606 as default): ").strip()
+            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 9606 as default): ").strip()
             tax_id = int(tax_id_input) if tax_id_input else 9606
             break
         except ValueError:
             print("Error: Tax ID must be a number. Please try again.")
             
-    input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
-        
-    tmp_file = input("Please enter the path to temporary output file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
+    while True:
+        input_file = input("\nPlease enter the path to the gene2pubmed file (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
+        if file_exists(input_file):
+            break
+        print(f"Error: Input file '{input_file}' not found. Please try again.")
+    
+    tmp_file = input("\nPlease enter where you want the temporary file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
     
     import_data(tax_id, input_file, tmp_file)
     return tax_id

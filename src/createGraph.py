@@ -4,6 +4,9 @@ import os
 import sys
 import py4cytoscape as p4c
 
+# Importing functions from other files
+from importData import file_exists
+
 def load_data(edge_file, node_file=None):
     """Load data from CSV files into NetworkX graph with edge_weights"""
     edges_df = pd.read_csv(edge_file)
@@ -43,7 +46,7 @@ def analyze_and_filter(G, n_degree, n_hubs):
     return top_hub_ids, degrees
 
 def create_graph(edge_file, node_file, n_degree, n_hubs):
-    print("Start creation of graph")
+    print("\nStarting creation of graph")
     
     # Load network
     G, _ = load_data(edge_file, node_file)
@@ -74,7 +77,7 @@ def main():
         
     while True:
         try:
-            n_degree_input = input("\nPlease enter a minimum degree (or press Enter for 2 as default): ").strip()
+            n_degree_input = input("\nPlease enter the minimum degree of the nodes you want (or press Enter for 2 as default): ").strip()
             n_degree = int(n_degree_input) if n_degree_input else 2
             break
         except ValueError:
@@ -82,15 +85,24 @@ def main():
     
     while True:
         try:
-            n_hubs_input = input("\nPlease enter the number of top hubs (or press Enter for 3 as default): ").strip()
+            n_hubs_input = input("\nPlease enter the number of top hubs you want displayed (or press Enter for 3 as default): ").strip()
             n_hubs = int(n_hubs_input) if n_hubs_input else 3
             break
         except ValueError:
             print("Error: Number of top hubs must be a number. Please try again.")
     
-    edge_file = input("\nEnter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
-    node_file = input("Enter path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
-        
+    while True:
+        edge_file = input("\nPlease enter the path to the edge file (or press Enter for default): ").strip() or 'data/edge_table.csv'
+        if file_exists(edge_file):
+            break
+        print(f"Error: Edge file '{edge_file}' not found. Please try again.")
+    
+    while True:
+        node_file = input("\nPlease enter the path to the node file (or press Enter for default): ").strip() or 'data/node_table.csv'
+        if file_exists(node_file):
+            break
+        print(f"Error: Node file '{node_file}' not found. Please try again.")
+    
     create_graph(edge_file, node_file, n_degree, n_hubs)
 
 if __name__ == "__main__":

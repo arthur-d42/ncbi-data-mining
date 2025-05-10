@@ -4,9 +4,8 @@ import pathlib
 import gzip
 import os
 
-def file_exists(file_path):
-    """Checks if the file exists"""
-    return os.path.isfile(file_path)
+# Importing functions from other files
+from importData import file_exists
 
 def geneID_to_symbol_dict(tax_id, info_file):
     """Function that takes a tax_id and finds the appropriate symbol in the gene_info.gz file"""
@@ -41,7 +40,7 @@ def create_node_file(edge_file, node_file, tax_id, info_file):
     """Function that takes an edge_file, the name of the wished output file, and creates the edges with names decided from 
     tax_id and the info file"""
     
-    print("Starting creation of node file")
+    print("\nStarting creation of node file")
     
     # Create dict that translates geneID to symbol
     symbol_dict = geneID_to_symbol_dict(tax_id, info_file)
@@ -93,21 +92,25 @@ def main():
     
     while True:
         try:
-            tax_id_input = input("\nPlease enter a tax ID(or press Enter for 9606 as default): ").strip()
+            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 9606 as default): ").strip()
             tax_id = int(tax_id_input) if tax_id_input else 9606
             break
         except ValueError:
             print("Error: Tax ID must be a number. Please try again.")
     
-    # Ask user for file paths or use defaults
-    edge_file = input("Please enter the path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
-    if not file_exists(edge_file):
-        print(f"Error: Temporary file '{edge_file}' not found.")
-        sys.exit(1)
+    while True:
+        edge_file = input("\nPlease enter the path to the edge file (or press Enter for default): ").strip() or 'data/edge_table.csv'
+        if file_exists(edge_file):
+            break
+        print(f"Error: Edge file '{edge_file}' not found. Please try again.")
 
-    node_file = input("Please enter the path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
+    while True:
+        info_file = input("\nPlease enter the path to the gene info file (or press Enter for default): ").strip() or "data/downloaded/gene_info.gz"
+        if file_exists(info_file):
+            break
+        print(f"Error: Info file '{info_file}' not found. Please try again.")
 
-    info_file = input("Please enter the path to gene_info.gz (or press Enter for default): ").strip() or "data/downloaded/gene_info.gz"
+    node_file = input("\nPlease enter where you want the node file (or press Enter for default): ").strip() or 'data/node_table.csv'
 
     # Call create_gene_translation_file
     create_node_file(edge_file, node_file, tax_id, info_file)
