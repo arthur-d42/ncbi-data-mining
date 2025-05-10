@@ -2,6 +2,11 @@
 import sys
 import pathlib
 import gzip
+import os
+
+def file_exists(file_path):
+    """Checks if the file exists"""
+    return os.path.isfile(file_path)
 
 def geneID_to_symbol_dict(tax_id, info_file):
     """Function that takes a tax_id and finds the appropriate symbol in the gene_info.gz file"""
@@ -16,7 +21,7 @@ def geneID_to_symbol_dict(tax_id, info_file):
             for line in file:
                 split_line = line.split()
                 # Looks for lines with tax_id, finds the gene ID, and the symbol from that line and adds to dict
-                if split_line[0] == tax_id:
+                if str(split_line[0]) == str(tax_id):
                     geneID = split_line[1]
                     symbol = split_line[2]
                     symbol_dict[geneID] = symbol
@@ -35,6 +40,8 @@ def geneID_to_symbol_dict(tax_id, info_file):
 def create_node_file(edge_file, node_file, tax_id, info_file):
     """Function that takes an edge_file, the name of the wished output file, and creates the edges with names decided from 
     tax_id and the info file"""
+    
+    print("Starting creation of node file")
     
     # Create dict that translates geneID to symbol
     symbol_dict = geneID_to_symbol_dict(tax_id, info_file)
@@ -58,6 +65,7 @@ def create_node_file(edge_file, node_file, tax_id, info_file):
                 # Will not add if not unique :)
                 unique_gene_ids.add(gene1)
                 unique_gene_ids.add(gene2)
+        print(f"Created node file in location {node_file}")
     except Exception as e:
         print(f"Error reading edge file: {e}")
         sys.exit(1)
@@ -73,33 +81,37 @@ def create_node_file(edge_file, node_file, tax_id, info_file):
                 # Look up symbol in dictionary, use empty string if not found
                 symbol = symbol_dict.get(gene_id, "")
                 f.write(f"{gene_id},{symbol}\n")
-                
+        
+        print("Successfully created node file")
+        
     except Exception as e:
         print(f"Error writing node file: {e}")
         sys.exit(1)
 
 def main():
     """Function that runs create_node_file() while asking for input"""
-    try:
-        # Ask for tax_id
-        tax_id = input("Please write a tax_id: ")
-        if not tax_id.isdigit():
-            print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
-            sys.exit(1)
-
-        # Ask user for file paths or use defaults
-        edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
-
-        node_file = input("Enter path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
-
-        info_file = input("Enter path to gene_info.gz (or press Enter for default): ").strip() or "data/downloaded/gene_info.gz"
-
-        # Call create_gene_translation_file
-        create_node_file(edge_file, node_file, tax_id, info_file)
-        print(f"Created node file in location {node_file}")
-    except:
-        print("Error") 
+    
+    while True:
+        try:
+            tax_id_input = input("\nPlease enter a tax ID(or press Enter for 9606 as default): ").strip()
+            tax_id = int(tax_id_input) if tax_id_input else 9606
+            break
+        except ValueError:
+            print("Error: Tax ID must be a number. Please try again.")
+    
+    # Ask user for file paths or use defaults
+    edge_file = input("Please enter the path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
+    if not file_exists(edge_file):
+        print(f"Error: Temporary file '{edge_file}' not found.")
         sys.exit(1)
+
+    node_file = input("Please enter the path to node_table.csv (or press Enter for default): ").strip() or 'data/node_table.csv'
+
+    info_file = input("Please enter the path to gene_info.gz (or press Enter for default): ").strip() or "data/downloaded/gene_info.gz"
+
+    # Call create_gene_translation_file
+    create_node_file(edge_file, node_file, tax_id, info_file)
+    
 
 
 if __name__ == "__main__":

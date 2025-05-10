@@ -1,6 +1,11 @@
 # Import libraries
 import subprocess
 import sys
+import os
+
+def file_exists(file_path):
+    """Checks if the file exists"""
+    return os.path.isfile(file_path)
 
 def sort_file(file, sorted_file):
     """Function that sorts files based on 3 column, and hereafter by 2 column.
@@ -76,19 +81,25 @@ def put_in_dict(sorted_file):
 
 def write_dict_to_csv(gene_dict, edge_file, weight_min):
     """Function that writes edge_file to to from a dict with edges and a weight. Selects only edges with a minimum of weight"""
-    with open(edge_file, 'w') as out:
-        # Write header
-        out.write("this_gene,other_gene,weight\n")
-        
-        # Write each entry
-        for (gene1, gene2), weight in gene_dict.items():
-            if weight >= weight_min:
-                out.write(f"{gene1},{gene2},{weight}\n")
-    return
+    try:
+        with open(edge_file, 'w') as out:
+            # Write header
+            out.write("this_gene,other_gene,weight\n")
+            
+            # Write each entry
+            for (gene1, gene2), weight in gene_dict.items():
+                if weight >= weight_min:
+                    out.write(f"{gene1},{gene2},{weight}\n")
+        print(f"Successfully created edge file in location {edge_file}")
+    except Exception as e:
+        print(f"Error while writing to file '{edge_file}': {e}")
+        sys.exit(1)
 
 
 def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
     """Function that creates an edge file (csv) from a tmp file, creating a sorted tmp file with a minimum weight"""
+    print("Starting creation of edge file")
+    
     # Sort tmp_file
     sort_file(tmp_file, sorted_tmp_file)
     
@@ -106,26 +117,29 @@ def create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min):
 
 def main():
     """Function that runs create_node_file() while asking for input"""
-    try:
+    while True:
         try:
-            weight_min = int(input("Please write a minimum weight (suggestion is 1): "))
+            weight_min_input = input("\nPlease enter a minimum weight (or press Enter for 3 as default): ").strip()
+            weight_min = int(weight_min_input) if weight_min_input else 3
+            break
         except ValueError: 
-            print("Error: weight_min must be a number")
-            sys.exit(1)
+            print("Error: weight_min must be a number. Please try again.")
         
-        tmp_file = input("Enter path to temporary output file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
-
-        sorted_tmp_file = input("Enter path to sorted temporary file (or press Enter for default): ").strip() or "data/sorted_tmp_file.tsv"
-
-        edge_file = input("Enter path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
         
-        create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)
-        print(f"Created edge file in location {edge_file}")
-    
-    except ValueError: 
-        print("Error: weight_min must be a number")
+
+    tmp_file = input("Please enter the path to temporary file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
+    if not file_exists(tmp_file):
+        print(f"Error: Temporary file '{tmp_file}' not found.")
         sys.exit(1)
-    
+
+    sorted_tmp_file = input("Please enter the path to sorted temporary file (or press Enter for default): ").strip() or "data/sorted_tmp_file.tsv"
+
+    edge_file = input("Please enter the path to edge_table.csv (or press Enter for default): ").strip() or 'data/edge_table.csv'
+    if not file_exists(edge_file):
+            print(f"Error: Edge file '{edge_file}' not found.")
+            sys.exit(1)
+
+    create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)   
 
 if __name__ == "__main__":
     # For running the program in terminal

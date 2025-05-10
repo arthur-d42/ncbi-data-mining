@@ -8,15 +8,9 @@ def import_data(tax_id, input_file, tmp_file):
     """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file""" 
     count = 0
     
-    if not tax_id.isdigit():
-        print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
-        sys.exit(1)
+    print("Starting import of data")
     
     try:
-        # Checking whether input file exists
-        if not pathlib.Path(input_file).is_file():
-            raise FileNotFoundError(f"Input file '{input_file}' does not exist.")
-
         # Open with gzip.open
         with gzip.open(input_file, 'rb') as file, open(tmp_file, 'w') as tmp:
             # First line
@@ -34,6 +28,7 @@ def import_data(tax_id, input_file, tmp_file):
         # Printing warning if no lines found for tax_id
         if count == 0:
             print(f"Warning: No entries found for tax_id {tax_id}")
+            sys.exit(1)
         
         # End of function
         print(f"Done importing file\nNumber of lines: {count}")
@@ -42,48 +37,35 @@ def import_data(tax_id, input_file, tmp_file):
     except FileNotFoundError as e:
         print(f"Error: {e}")
         sys.exit(1)
-        
+    
+    except PermissionError as e:
+        print(f"Error: Permission denied when writing to '{tmp_file}'. {e}")
+        sys.exit(1)
+    
+    except gzip.BadGzipFile:
+        print(f"Error: The file '{input_file}' is not a valid gzip file.")
+        sys.exit(1)
+    
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         sys.exit(1)
 
-
 def main():
     """Function that runs import_data() while asking for input"""
-    if len(sys.argv) == 1:
-        # If just file is called
-        tax_id = input("Please write a tax_id: ")
-        if not tax_id.isdigit():
-            print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
-            sys.exit(1)
-        
-        input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
+    while True:
+        try:
+            tax_id_input = input("\nPlease enter a tax ID(or press Enter for 9606 as default): ").strip()
+            tax_id = int(tax_id_input) if tax_id_input else 9606
+            break
+        except ValueError:
+            print("Error: Tax ID must be a number. Please try again.")
             
-        import_data(tax_id, input_file)
-        return tax_id
-    
-    elif len(sys.argv) == 2:
-        # One argument: tax_id
-        tax_id = sys.argv[1]
-        if not tax_id.isdigit():
-            print(f"Error: tax_id must be a number. You entered: '{tax_id}'")
-            sys.exit(1)
-            
-        input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
+    input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
         
-        import_data(tax_id, input_file)
-        return tax_id
-        
-    elif len(sys.argv) == 3: 
-        # If both program, tax_id and file is provided
-        tax_id = sys.argv[1]
-        input_file = sys.argv[2]
-        import_data(tax_id, input_file)
-        return tax_id
+    tmp_file = input("Please enter the path to temporary output file (or press Enter for default): ").strip() or "data/tmp_file.tsv"
     
-    else:
-        print(f"Usage: python {sys.argv[0]} tax_id(optional) dir_to_gene2pubmed.gz(optional)")
-        sys.exit(1)
+    import_data(tax_id, input_file, tmp_file)
+    return tax_id
 
 if __name__ == "__main__":
     # For running the program in terminal
