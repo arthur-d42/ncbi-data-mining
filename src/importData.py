@@ -13,7 +13,7 @@ def import_data(tax_id, input_file, tmp_file):
     """Function that imports the data from an organism with a specified tax_id from the gene2pubmed into a temp-file""" 
     count = 0
     
-    print("Starting import of data")
+    print("\nStarting import of data")
     
     try:
         # Open with gzip.open
@@ -59,8 +59,8 @@ def main():
     """Function that runs import_data() while asking for input"""
     while True:
         try:
-            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 9606 as default): ").strip()
-            tax_id = int(tax_id_input) if tax_id_input else 9606
+            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 69 as default): ").strip()
+            tax_id = int(tax_id_input) if tax_id_input else 69
             break
         except ValueError:
             print("Error: Tax ID must be a number. Please try again.")

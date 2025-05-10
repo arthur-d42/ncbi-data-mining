@@ -12,8 +12,8 @@ from createGraph import create_graph
 # Ask for user input
 while True:
         try:
-            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 9606 as default): ").strip()
-            tax_id = int(tax_id_input) if tax_id_input else 9606
+            tax_id_input = input("\nPlease enter a tax ID (or press Enter for 69 as default): ").strip()
+            tax_id = int(tax_id_input) if tax_id_input else 69
             break
         except ValueError:
             print("Error: Tax ID must be a number. Please try again.")
@@ -68,7 +68,6 @@ import_data(tax_id, input_file, tmp_file)
 
 # Create Edge File
 create_edge_file(tmp_file, sorted_tmp_file, edge_file, weight_min)
-
 
 
 # Delete temporary files
