@@ -2,7 +2,6 @@
 import sys
 import pathlib
 import gzip
-import os
 
 # Importing functions from other files
 from importData import file_exists

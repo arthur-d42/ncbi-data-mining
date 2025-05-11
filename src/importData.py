@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # Import libraries
 import sys
-import pathlib
 import gzip
 import os
 

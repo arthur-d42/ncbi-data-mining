@@ -29,7 +29,7 @@ def test_write_dict_to_csv_1(create_test_dict, tmp_path):
     
     # Assert
     with open(edge_file, 'r') as f:
-        result = "D"
+        result = f.read()
         expected = "this_gene,other_gene,weight\nGene1,Gene2,5\nGene1,Gene3,3\nGene4,Gene5,10\n"
         assert result == expected, f"Did not get expected output"
 

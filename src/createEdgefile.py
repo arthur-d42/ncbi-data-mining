@@ -1,7 +1,6 @@
 # Import libraries
 import subprocess
 import sys
-import os
 
 # Importing functions from other files
 from importData import file_exists
