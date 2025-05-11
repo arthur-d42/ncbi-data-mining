@@ -3,6 +3,7 @@ import sys
 import os
 
 # Importing functions from other files
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 from importData import file_exists
 from importData import import_data
 from createEdgefile import create_edge_file
