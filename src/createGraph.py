@@ -1,7 +1,6 @@
 import pandas as pd
 import networkx as nx
 import os
-import sys
 import py4cytoscape as p4c
 
 # Importing functions from other files
@@ -77,8 +76,8 @@ def main():
         
     while True:
         try:
-            n_degree_input = input("\nPlease enter the minimum degree of the nodes you want (or press Enter for 2 as default): ").strip()
-            n_degree = int(n_degree_input) if n_degree_input else 2
+            n_degree_input = input("\nPlease enter the minimum degree of the nodes you want (or press Enter for 4 as default): ").strip()
+            n_degree = int(n_degree_input) if n_degree_input else 4
             break
         except ValueError:
             print("Error: Minimum degree must be a number. Please try again.")
