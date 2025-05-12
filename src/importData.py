@@ -59,7 +59,7 @@ def main():
         
         input_file = input(f"Please enter the path to gene2pubmed.gz (or press Enter for default): ").strip() or "data/downloaded/gene2pubmed.gz"
             
-        import_data(tax_id, input_file)
+        import_data(tax_id, input_file, 'data/tmp_file.tsv')
         return tax_id
     
     elif len(sys.argv) == 2:

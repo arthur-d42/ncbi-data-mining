@@ -13,9 +13,11 @@ def geneID_to_symbol_dict(tax_id, info_file):
             raise FileNotFoundError(f"Input file '{info_file}' does not exist.")
 
         with gzip.open(info_file, 'rt') as file:
+            print(file.readline())
             for line in file:
                 split_line = line.split()
                 # Looks for lines with tax_id, finds the gene ID, and the symbol from that line and adds to dict
+                #print(split_line[10])
                 if split_line[0] == tax_id:
                     geneID = split_line[1]
                     symbol = split_line[2]

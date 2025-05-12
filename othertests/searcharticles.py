@@ -20,6 +20,7 @@ def put_in_dict(file):
     current_pubmed_id = 0
     
     # Open file for reading
+    count = 0
     with open(file, 'r') as file:
         # Read header line and skip
         file.readline()
@@ -35,7 +36,9 @@ def put_in_dict(file):
 
             if pubmed_id == current_pubmed_id:
                 current_genes.append(gene)
-                
+            if gene == '7157':
+                #print(pubmed_id)
+                count += 1
             else:
                 # No need for this when sorting in bash
                 # current_genes.sort()
@@ -46,12 +49,17 @@ def put_in_dict(file):
                 current_pubmed_id = pubmed_id
                 # because the "read pointer" is actually on the next line when all of the above is running
                 current_genes = [gene]
+    print(f"Count: {count}")
     return interaction_dict
 
 
-tmpfile = "data/tmpfile"
-sorted_tmpfile = "data/sorted_tmpfile"
+tmpfile = "data/tmp_file.tsv"
+sorted_tmpfile = "data/sorted_tmp_file.tsv"
 
 sort_file(tmpfile, sorted_tmpfile)
 edge_dict = put_in_dict(sorted_tmpfile)
+sorted_edge_dict = OrderedDict(sorted(edge_dict.items(), key=itemgetter(1), reverse=True))
+
+# Print the sorted dictionary
+print(sorted_edge_dict)
 # write_to_file(put_in_dict(sorted_tmpfile), "data/edges")
